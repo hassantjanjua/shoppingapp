@@ -27,43 +27,52 @@ const categories: Category[] = [
 
 export default function Categories() {
   return (
-    <section className="py-20 bg-gray-50">
+    <section className="py-24 bg-gradient-to-b from-black via-gray-900 to-black">
       <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-4xl text-gray-800 font-extrabold text-center mb-14">
+
+        {/* Heading */}
+        <h2 className="text-4xl md:text-5xl font-extrabold text-center mb-16 bg-gradient-to-r from-gray-200 via-white to-gray-400 bg-clip-text text-transparent">
           Shop by Categories
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-10 mb-16">
+        {/* Categories Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-10 mb-20">
           {categories.map((category) => (
             <Link
               key={category.id}
               href={`/category?cat=${category.value}`}
-              className="group bg-white rounded-2xl p-6 shadow hover:shadow-xl transition text-center"
+              className="group relative bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 text-center transition duration-500 hover:scale-105 hover:border-white/30 hover:shadow-2xl"
             >
-              <div className="w-32 h-32 mx-auto mb-4 overflow-hidden rounded-xl bg-gray-100">
+              {/* Glow Effect */}
+              <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-br from-gray-800/40 to-gray-700/20"></div>
+
+              {/* Image */}
+              <div className="relative w-28 h-28 mx-auto mb-6 overflow-hidden rounded-2xl bg-gray-800">
                 <img
                   src={category.image}
                   alt={category.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition"
+                  className="w-full h-full object-cover transition duration-500 group-hover:scale-110"
                 />
               </div>
 
-              <p className="font-semibold text-gray-800">
+              {/* Title */}
+              <p className="relative font-semibold text-gray-200 group-hover:text-white transition">
                 {category.name}
               </p>
             </Link>
           ))}
         </div>
 
-        {/* Shop Now Button — END */}
+        {/* Shop Now Button */}
         <div className="text-center">
           <Link
             href="/category?cat=all"
-            className="inline-block px-12 py-4 rounded-full bg-black text-white font-semibold border border-black transition hover:bg-white hover:text-black"
+            className="inline-block px-14 py-4 rounded-full bg-white text-black font-semibold transition duration-300 hover:bg-gray-300 hover:scale-105 shadow-lg"
           >
             Shop Now
           </Link>
         </div>
+
       </div>
     </section>
   );

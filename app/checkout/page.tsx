@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useCart } from "@/app/context/CartContext";
 import Image from "next/image";
+import Footer from "@/app/components/footer";
 
 export default function CheckoutPage() {
   const { cart, total, clearCart } = useCart();
@@ -17,7 +18,9 @@ export default function CheckoutPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -48,97 +51,145 @@ export default function CheckoutPage() {
       }
     } catch (err) {
       console.error(err);
-      alert("Failed to send order. Try again.");
+      alert("Failed to send order.");
     } finally {
       setLoading(false);
     }
   };
 
+  /* SUCCESS SCREEN */
   if (success) {
     return (
-      <section className="min-h-screen bg-gray-50 pt-20 px-6 flex justify-center items-center">
-        <div className="bg-white p-8 rounded-xl shadow text-center max-w-md">
-          <h2 className="text-2xl font-bold mb-4 text-black">Thank you for your order!</h2>
-          <p className="text-gray-700 mb-4">
-            A confirmation email has been sent to <span className="font-semibold">{form.email}</span>.
-          </p>
-          <p className="text-gray-500">We will contact you soon regarding delivery.</p>
-        </div>
-      </section>
+      <>
+        <section className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black flex items-center justify-center px-6">
+          <div className="bg-white/5 border border-white/10 backdrop-blur-md p-10 rounded-3xl text-center max-w-md text-white shadow-2xl">
+            <div className="text-6xl mb-4">🎉</div>
+            <h2 className="text-3xl font-bold mb-4">
+              Order Confirmed!
+            </h2>
+            <p className="text-gray-300 mb-4">
+              Confirmation sent to{" "}
+              <span className="font-semibold">{form.email}</span>
+            </p>
+            <p className="text-gray-400 text-sm">
+              Our team will contact you shortly.
+            </p>
+          </div>
+        </section>
+        <Footer />
+      </>
     );
   }
 
   return (
-    <section className="min-h-screen bg-gray-50 pt-20 px-6">
-      <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow space-y-6">
-        <h1 className="text-3xl font-bold text-black">Checkout</h1>
+    <>
+      <section className="min-h-screen bg-gradient-to-b from-black via-gray-900 to-black pt-28 px-6 md:px-12 text-white">
+        <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
 
-        {cart.length === 0 && <p className="text-gray-700">Your cart is empty.</p>}
+          {/* ORDER SUMMARY */}
+          <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md shadow-xl">
+            <h2 className="text-2xl font-bold mb-6">
+              Order Summary
+            </h2>
 
-        {cart.map((item) => (
-          <div key={item.id} className="flex items-center gap-4">
-            <Image src={item.image} alt={item.name} width={60} height={60} className="rounded" />
-            <div className="flex-1">
-              <p className="font-medium text-black">{item.name}</p>
-              <p className="text-gray-500">{item.quantity} × ${item.price}</p>
-            </div>
+            {cart.length === 0 ? (
+              <p className="text-gray-400">
+                Your cart is empty.
+              </p>
+            ) : (
+              <div className="space-y-5">
+                {cart.map((item) => (
+                  <div
+                    key={item.id}
+                    className="flex items-center gap-4"
+                  >
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={70}
+                      height={70}
+                      className="rounded-xl object-cover"
+                    />
+                    <div className="flex-1">
+                      <p className="font-semibold">
+                        {item.name}
+                      </p>
+                      <p className="text-gray-400 text-sm">
+                        {item.quantity} × ${item.price}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+
+                <div className="border-t border-white/10 pt-4 flex justify-between text-lg font-bold">
+                  <span>Total</span>
+                  <span>${total}</span>
+                </div>
+
+                <div className="text-sm text-gray-400 mt-4">
+                  🔒 Secure Checkout • 🚚 Fast Delivery • ✔ Verified Store
+                </div>
+              </div>
+            )}
           </div>
-        ))}
 
-        {cart.length > 0 && (
-          <>
-            {/* Total */}
-            <div className="flex justify-between font-semibold text-lg mt-4 text-black">
-              <span>Total:</span>
-              <span>${total}</span>
+          {/* CUSTOMER FORM */}
+          {cart.length > 0 && (
+            <div className="bg-white/5 border border-white/10 rounded-3xl p-8 backdrop-blur-md shadow-xl">
+              <h2 className="text-2xl font-bold mb-6">
+                Shipping Details
+              </h2>
+
+              <div className="space-y-5">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Full Name"
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+                />
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email Address"
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+                />
+
+                <textarea
+                  name="address"
+                  placeholder="Full Address"
+                  value={form.address}
+                  onChange={handleChange}
+                  className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+                />
+
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone Number"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className="w-full bg-black/40 border border-white/20 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-white/30 transition"
+                />
+              </div>
+
+              <button
+                onClick={handlePlaceOrder}
+                disabled={loading}
+                className="w-full mt-8 py-3 rounded-full bg-white text-black font-semibold hover:bg-gray-300 transition hover:scale-105 disabled:opacity-50"
+              >
+                {loading ? "Processing..." : "Place Order"}
+              </button>
             </div>
+          )}
+        </div>
+      </section>
 
-            {/* Customer Form */}
-            <div className="space-y-4 mt-6">
-              <input
-                type="text"
-                name="name"
-                placeholder="Full Name"
-                value={form.name}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-4 py-2 text-black"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Email"
-                value={form.email}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-4 py-2 text-black"
-              />
-              <textarea
-                name="address"
-                placeholder="Address"
-                value={form.address}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-4 py-2 text-black"
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number"
-                value={form.phone}
-                onChange={handleChange}
-                className="w-full border border-gray-300 rounded px-4 py-2 text-black"
-              />
-            </div>
-
-            {/* Place Order Button below form */}
-            <button
-              onClick={handlePlaceOrder}
-              disabled={loading}
-              className="w-full mt-4 bg-black text-white py-3 rounded-lg border border-black hover:bg-white hover:text-black transition disabled:opacity-50"
-            >
-              {loading ? "Placing Order..." : "Place Order"}
-            </button>
-          </>
-        )}
-      </div>
-    </section>
+      <Footer />
+    </>
   );
 }

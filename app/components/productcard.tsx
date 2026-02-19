@@ -9,18 +9,36 @@ export default function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
 
   return (
-    <div className="bg-white rounded-xl p-4 shadow hover:shadow-lg transition relative">
+    <div className="group relative bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-4 shadow-md hover:shadow-2xl transition duration-300 overflow-hidden">
+      
+      {/* Glow Hover Effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500 rounded-2xl" />
+
+      {/* Image */}
       <Link href={`/product/${product.slug}`}>
-        <div className="w-full h-48 relative rounded-lg overflow-hidden mb-4 cursor-pointer">
-          <Image src={product.image} alt={product.name} fill className="object-cover rounded-lg" />
+        <div className="w-full h-48 relative rounded-xl overflow-hidden mb-4 cursor-pointer">
+          <Image
+            src={product.image}
+            alt={product.name}
+            fill
+            className="object-cover transition duration-500 group-hover:scale-105"
+          />
         </div>
       </Link>
 
-      <h3 className="font-semibold text-black">{product.name}</h3>
-      <p className="text-gray-500 text-sm line-clamp-2">{product.description}</p>
+      {/* Content */}
+      <h3 className="font-semibold text-white group-hover:text-gray-200 transition">
+        {product.name}
+      </h3>
 
+      <p className="text-gray-400 text-sm line-clamp-2">
+        {product.description}
+      </p>
+
+      {/* Price + Button */}
       <div className="mt-4 flex justify-between items-center">
-        <span className="font-bold">${product.price}</span>
+        <span className="font-bold text-white">${product.price}</span>
+
         <button
           onClick={() =>
             addToCart({
@@ -31,9 +49,10 @@ export default function ProductCard({ product }: { product: Product }) {
               quantity: 1,
             })
           }
-          className="bg-black-400 text-black px-3 py-1 rounded-lg text-sm hover:bg-black-300 transition"
+          className="relative px-4 py-1.5 rounded-full text-sm font-medium bg-white/10 text-white border border-white/20 backdrop-blur-md overflow-hidden group-hover:bg-white/20 transition"
         >
-          Add
+          <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-500 bg-gradient-to-r from-white/20 to-transparent rounded-full" />
+          <span className="relative z-10">Add</span>
         </button>
       </div>
     </div>
