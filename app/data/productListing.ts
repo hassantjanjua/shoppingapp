@@ -25,7 +25,7 @@ export const products: Product[] = [
     id: 1,
     name: "iPhone 15 Pro",
     slug: "iphone-15-pro",
-    price: 999,
+    price: 1100,
     category: "smartphone",
     image:
       "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&q=80&auto=format",
@@ -36,7 +36,7 @@ export const products: Product[] = [
     id: 2,
     name: "Samsung Galaxy S24 Ultra",
     slug: "samsung-galaxy-s24-ultra",
-    price: 899,
+    price: 999,
     category: "smartphone",
     image:
       "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&q=80&auto=format",
@@ -47,7 +47,7 @@ export const products: Product[] = [
     id: 3,
     name: "Google Pixel 8 Pro",
     slug: "google-pixel-8-pro",
-    price: 799,
+    price: 759,
     category: "smartphone",
     image: "/Google-Pixel-8-Pro-Qmart-1.jpg",
     description:
